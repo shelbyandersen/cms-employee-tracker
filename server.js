@@ -1,5 +1,5 @@
 const mysql = require("mysql");
-const inquirer = require("inquirer");
+const prompt = require("inquirer");
 
 const connection = mysql.createConnection({
   host: "localhost",
@@ -14,7 +14,7 @@ const connection = mysql.createConnection({
 
 connection.connect(function(err) {
   if (err) throw err;
-  userInput();
+//   userInput();
 });
 
 function userInput() {
