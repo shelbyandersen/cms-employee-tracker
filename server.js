@@ -1,13 +1,14 @@
+// require
 const mysql = require("mysql");
 const prompt = require("inquirer");
+const cTable = require("console.table")
+let Database = require("./lib/db");
 
+// create db connection
 const connection = mysql.createConnection({
   host: "localhost",
-  // Your port; if not 3306
   port: 3306,
-  // Your username
   user: "root",
-  // Your password
   password: "Running123",
   database: "cms_employeeDB"
 });
