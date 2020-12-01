@@ -73,6 +73,39 @@ async function getEmployeeId(fullName){
   return rows[0].id;
 }
 
+// return all employee's fullname and store it in employeeNames array.
+async function getEmployeeNames(){
+  let query = "SELECT * FROM employee";
+  const rows = await db.query(query);
+  let employeeNames = [];
+  for(const employee of rows){
+      employeeNames.push(employee.first_name + " " + employee.last_name);
+  }
+  return employeeNames;
+}
+/
+// build query to view all recorded data from our tables.
+async function viewDepartment(){
+  let query = "SELECT * FROM department";
+  const rows = await db.query(query);
+  console.table(rows);
+}
+
+// return an array with only two elements first_name and last_name.
+function getFirstAndLastName(fullName){
+  let employee = fullName.split(" ");
+  if(employee.length == 2){
+      return employee;
+  }
+
+  const last_name = employee[employee.length-1];
+  let first_name = " ";
+  for(let i=0; i< employee.length-1; i++){
+      first_name = first_name + employee[i] + " ";
+  }
+  return [first_name.trim(), last_name];
+}
+
 // define employee role
 async function updateEmployeerole(employeeInfo){
   const roleId = await getRoleId(employeeInfo.role);
@@ -161,6 +194,21 @@ async function getAddEmployeeInfo(){
           choices: [
               // we can use spread operator to pass the values of our managers array populate from database
               ...managers
+          ]
+      }
+  ]);
+}
+
+async function getremoveEmployeeInfo(){
+  const employees = await getEmployeeNames();
+  return inquirer
+  .prompt([
+      {
+          name: "employeeName",
+          type:"list",
+          message: "Which employee do you want to remove?",
+          choices: [
+              ...employees
           ]
       }
   ]);
