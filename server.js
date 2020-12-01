@@ -307,3 +307,82 @@ async function getUpdateEmployeeRoleInfo(){
       }
   ]);
 }
+
+async function main(){
+  let exitLoop = false;
+  while(!exitLoop) {
+      const prompt = await start();
+      switch(prompt.actions) {
+          case "Add department": {
+              const newDepartmentName = await getDepartmentInfo();
+              await addDepartment(newDepartmentName);
+              break;
+          }
+
+          case "Add role": {
+              const newRole = await getRoleInfo();
+              await addRole(newRole);
+              break;
+          }
+
+          case "Add employee": {
+              const newEmployee = await getAddEmployeeInfo();
+              await addEmployee(newEmployee);
+              break;
+          }
+
+          case "View departments": {
+              await viewDepartment();
+              break;
+          }
+
+          case "view roles": {
+              await viewRole();
+              break;
+          }
+          case "view employees": {
+              await viewEmployee();
+              break;
+          }
+
+          case "view all employees by department": {
+              await viewEmployeesByDepartment();
+              break;
+          }
+
+          case "Update employee roles": {
+              const employee = await getUpdateEmployeeRoleInfo();
+              await updateEmployeerole(employee);
+              break;
+          }
+
+          case "Delete employee": {
+              const employee = await getremoveEmployeeInfo();
+              await removeEmployee(employee);
+              break;
+          }
+          case "view employees by manager": {
+              
+              await viewEmployeesByManager();
+              break;
+          }
+
+          case "EXIT": {
+              exitLoop = true;
+              process.exit(0);
+              return;
+          }
+
+          default:
+              console.log(`Internal warning. Shouldn't get here. action was ${prompt.actions}`);
+      
+  
+      }
+  }
+}
+
+process.on("exit", async function(code) {
+  await db.close();
+  return console.log(`About to exit with code ${code}`);
+});
+main();
