@@ -91,6 +91,13 @@ async function viewDepartment(){
   console.table(rows);
 }
 
+async function viewRole(){
+  let query = "SELECT * FROM role";
+  const rows = await db.query(query);
+  console.table(rows);
+  return rows;
+}
+
 // return an array with only two elements first_name and last_name.
 function getFirstAndLastName(fullName){
   let employee = fullName.split(" ");
