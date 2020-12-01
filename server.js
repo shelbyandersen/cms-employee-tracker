@@ -103,6 +103,12 @@ async function viewEmployee(){
   const rows = await db.query(query);
   console.table(rows);
 }
+async function viewEmployeesByDepartment(){
+  // use JOIN to combine row data across two separate tables(employee and department)
+  let query = "SELECT first_name, last_name, department.name FROM ((employee INNER JOIN role ON role_id = role.id) INNER JOIN department ON department_id = department.id);";
+  const rows = await db.query(query);
+  console.table(rows);
+}
 
 // return an array with only two elements first_name and last_name.
 function getFirstAndLastName(fullName){
