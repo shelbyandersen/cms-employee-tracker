@@ -55,6 +55,35 @@ async function getDepartmentId(departmentName){
   return rows[0].id;
 }
 
+// get the role's id for each title column from role table.
+async function getRoleId(roleName){
+  let query = "SELECT * FROM role WHERE role.title=?";
+  let args = [roleName];
+  const rows = await db.query(query, args);
+  return rows[0].id;
+}
+
+// define employee role
+async function updateEmployeerole(employeeInfo){
+  const roleId = await getRoleId(employeeInfo.role);
+  const employee = getFirstAndLastName(employeeInfo.employeeName);
+
+  let query = "UPDATE employee SET role_id=? WHERE employee.first_name=? AND employee.last_name=?";
+  let args = [roleId, employee[0], employee[1]];
+  const rows = await db.query(query, args);
+  console.log(`You updated employee ${employee[0]} ${employee[1]} with role ${employeeInfo.role}`);
+}
+
+async function addEmployee(employeeInfo){
+  let roleId = await getRoleId(employeeInfo.role);
+  let managerId = await getEmployeeId(employeeInfo.manager);
+  let query = "INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)";
+  let args = [employeeInfo.first_name, employeeInfo.last_name, roleId, managerId];
+  const rows= await db.query(query, args);
+  console.log(`You Added employee ${employeeInfo.first_name} ${employeeInfo.last_name}.`);
+
+}
+
 async function addRole(roleInfo){
   const departmentId = await getDepartmentId(roleInfo.departmentName);
   const salary = roleInfo.salary;
