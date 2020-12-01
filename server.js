@@ -16,6 +16,7 @@ const db = new Database({
 // determine who is a manager from our employee table.
 async function getManagerName(){
   let query = "SELECT * FROM employee WHERE manager_id IS NULL";
+
   // loop through employee table
   const rows = await db.query(query);
   let employeeNames = [];
@@ -59,6 +60,15 @@ async function getDepartmentId(departmentName){
 async function getRoleId(roleName){
   let query = "SELECT * FROM role WHERE role.title=?";
   let args = [roleName];
+  const rows = await db.query(query, args);
+  return rows[0].id;
+}
+
+// // get the employee's id for each employee after having employee's first and last name.
+async function getEmployeeId(fullName){
+  let employee = getFirstAndLastName(fullName);
+  let query = "SELECT id FROM employee WHERE employee.first_name=? AND employee.last_name=?";
+  let args = [employee[0],employee[1]];
   const rows = await db.query(query, args);
   return rows[0].id;
 }
