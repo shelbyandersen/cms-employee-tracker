@@ -83,7 +83,7 @@ async function getEmployeeNames(){
   }
   return employeeNames;
 }
-/
+
 // build query to view all recorded data from our tables.
 async function viewDepartment(){
   let query = "SELECT * FROM department";
@@ -173,7 +173,6 @@ async function addRole(roleInfo){
   console.log(`Added roles ${title}`);
 }
 
-//
 // ask user what they want to do
 async function start() {
   return inquirer
@@ -270,6 +269,31 @@ async function getRoleInfo(){
           message: "Which department uses this role?",
           choices: [
               ...departments
+          ]
+      }
+  ]);
+}
+
+// update employee
+async function getUpdateEmployeeRoleInfo(){
+  const employees = await getEmployeeNames();
+  const roles = await getRoles();
+  return inquirer
+  .prompt([
+      {
+          name: "employeeName",
+          type: "list",
+          message: "Which employee do you want to update?",
+          choices: [
+              ...employees
+          ]
+      },
+      {
+          name: "role",
+          type: "list",
+          message: "What is the employee's new role?",
+          choices: [
+              ...roles
           ]
       }
   ]);
