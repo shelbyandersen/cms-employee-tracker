@@ -98,6 +98,12 @@ async function viewRole(){
   return rows;
 }
 
+async function viewEmployee(){
+  let query = "SELECT * FROM employee";
+  const rows = await db.query(query);
+  console.table(rows);
+}
+
 // return an array with only two elements first_name and last_name.
 function getFirstAndLastName(fullName){
   let employee = fullName.split(" ");
