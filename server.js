@@ -25,6 +25,29 @@ async function getManagerName(){
   return employeeNames;
 }
 
+// return role as an array
+async function getRoles(){
+  let query = "SELECT  title FROM role";
+  const rows = await db.query(query);
+  let roles = [];
+  for(const row of rows){
+      roles.push(row.title);
+  }
+  return roles;
+}
+
+// return department names as an array
+async function getDepartmentNames(){
+  let query = "SELECT name FROM department";
+  const rows = await db.query(query);
+  let departments = [];
+  for(const row of rows){
+      departments.push(row.name);
+  }
+  return departments;
+}
+
+//
 // ask user what they want to do
 async function start() {
   return inquirer
@@ -81,6 +104,31 @@ async function getAddEmployeeInfo(){
           choices: [
               // we can use spread operator to pass the values of our managers array populate from database
               ...managers
+          ]
+      }
+  ]);
+}
+
+async function getRoleInfo(){
+  const departments = await getDepartmentNames();
+  return inquirer
+  .prompt([
+      {
+          name: "roleName",
+          type: "input",
+          message: "What is the title of the new role?"
+      },
+      {
+          name:"salary",
+          type:"input",
+          message:"What is the salary of the new role?"
+      },
+      {
+          name: "departmentName",
+          type: "list",
+          message: "Which department uses this role?",
+          choices: [
+              ...departments
           ]
       }
   ]);
