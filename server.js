@@ -173,6 +173,15 @@ async function addRole(roleInfo){
   console.log(`Added roles ${title}`);
 }
 
+// delete employee from employee table
+async function removeEmployee(employeeInfo){
+  const employeeName = getFirstAndLastName(employeeInfo.employeeName);
+  let query = "DELETE FROM employee WHERE first_name=? AND last_name=?";
+  let args = [employeeName[0], employeeName[1]];
+  const rows = await db.query(query, args);
+  console.log(`Employee ${employeeName[0]} ${employeeName[1]} Deleted`);
+}
+
 // ask user what they want to do
 async function start() {
   return inquirer
