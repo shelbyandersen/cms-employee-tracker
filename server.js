@@ -47,6 +47,24 @@ async function getDepartmentNames(){
   return departments;
 }
 
+// determine the id for each department name from department table.
+async function getDepartmentId(departmentName){
+  let query = "SELECT * FROM department WHERE department.name=?";
+  let args = [departmentName];
+  const rows = await db.query(query, args);
+  return rows[0].id;
+}
+
+async function addRole(roleInfo){
+  const departmentId = await getDepartmentId(roleInfo.departmentName);
+  const salary = roleInfo.salary;
+  const title = roleInfo.roleName;
+  let query = "INSERT INTO role (title, salary, department_id) VALUES (?,?,?)";
+  let args = [title, salary, departmentId];
+  const rows = await db.query(query, args);
+  console.log(`Added roles ${title}`);
+}
+
 //
 // ask user what they want to do
 async function start() {
